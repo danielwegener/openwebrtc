@@ -91,7 +91,6 @@ def write_file(content, path, filename):
 
 
 HEADERS = [
-    'android/native_window_jni.h',
     'owr.h',
     'owr_audio_payload.h',
     'owr_audio_renderer.h',
@@ -118,19 +117,19 @@ HEADERS = [
     'owr_crypto_utils.h',
 ]
 
-class WindowHandleType(ObjectMetaType(
-        gir_type='WindowHandle',
-        java_type='Surface',
-        c_type='OwrWindowHandle',
-        package='android.view',
-    )):
-
-    def transform_to_c(self):
-        return TypeTransform([
-            C.Decl(self.c_type, self.c_name),
-        ],[
-            C.Assign(self.c_name, C.Call('ANativeWindow_fromSurface', 'env', self.jni_name)),
-        ])
+# class WindowHandleType(ObjectMetaType(
+#         gir_type='WindowHandle',
+#         java_type='Surface',
+#         c_type='OwrWindowHandle',
+#         package='android.view',
+#     )):
+#
+#     def transform_to_c(self):
+#         return TypeTransform([
+#             C.Decl(self.c_type, self.c_name),
+#         ],[
+#             C.Assign(self.c_name, C.Call('ANativeWindow_fromSurface', 'env', self.jni_name)),
+#         ])
 
 
 class GMainContextDummy(GirMetaType()):
@@ -163,7 +162,7 @@ def main(argv = None):
 
     type_registry = TypeRegistry()
     type_registry.register(standard_types)
-    type_registry.register(WindowHandleType)
+#    type_registry.register(WindowHandleType)
     type_registry.register(GMainContextDummy)
 
     xml_root = ET.parse(args.gir).getroot()

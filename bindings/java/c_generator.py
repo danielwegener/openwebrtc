@@ -661,7 +661,7 @@ def gen_source(namespaces, include_headers):
         ]
     )
 
-    include_headers = ['jni.h', 'android/log.h'] + include_headers
+    include_headers = ['jni.h'] + include_headers
     includes = '\n'.join('#include <' + h + '>' for h in include_headers)
 
     body = [
@@ -682,15 +682,15 @@ def gen_source(namespaces, include_headers):
 
 
 HEADER = """
-#define android_assert(st) if (!(st)) {{ __android_log_write(ANDROID_LOG_ERROR, "OpenWebRTC", "Assertion failed at "G_STRINGIFY(__LINE__));}}
+#define android_assert(st)
 #undef g_assert
 #define g_assert android_assert
 
-#define log_verbose(st, ...) __android_log_print(ANDROID_LOG_VERBOSE, "{0}", "["G_STRINGIFY(__LINE__)"]: "st, ##__VA_ARGS__);
-#define log_debug(st, ...) __android_log_print(ANDROID_LOG_DEBUG, "{0}", "["G_STRINGIFY(__LINE__)"]: "st, ##__VA_ARGS__);
-#define log_info(st, ...) __android_log_print(ANDROID_LOG_INFO, "{0}", "["G_STRINGIFY(__LINE__)"]: "st, ##__VA_ARGS__);
-#define log_warning(st, ...) __android_log_print(ANDROID_LOG_WARN, "{0}", "["G_STRINGIFY(__LINE__)"]: "st, ##__VA_ARGS__);
-#define log_error(st, ...) __android_log_print(ANDROID_LOG_ERROR, "{0}", "["G_STRINGIFY(__LINE__)"]: "st, ##__VA_ARGS__);
+#define log_verbose(st, ...)
+#define log_debug(st, ...)
+#define log_info(st, ...)
+#define log_warning(st, ...)
+#define log_error(st, ...)
 """.format(config.LOG_TAG)
 
 GET_JNI_ENV = [

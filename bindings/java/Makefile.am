@@ -3,6 +3,8 @@
 AM_CPPFLAGS = \
 	$(GLIB_CFLAGS) \
 	-I$(ANDROID_NDK_PREFIX)/include \
+	-I$(JAVA_HOME)/include \
+	-I$(JAVA_HOME)/include/linux \
 	-I$(top_srcdir)/owr \
 	-I$(top_srcdir)/bridge \
 	-I$(top_srcdir)/transport \
@@ -21,7 +23,7 @@ endif
 
 libopenwebrtc_jni_la_SOURCES = owr_jni.c
 libopenwebrtc_jni_la_LIBADD = \
-	-L$(ANDROID_NDK_PREFIX)/lib -landroid \
+##	-L$(ANDROID_NDK_PREFIX)/lib -landroid \
 	$(top_builddir)/owr/libopenwebrtc.la
 
 if OWR_BRIDGE
@@ -83,15 +85,15 @@ install-data-local: install-exec
 	mkdir -p '$(DESTDIR)/$(javadocdir)'
 	cp -r javadoc/* '$(DESTDIR)/$(javadocdir)'
 	mkdir -p '$(DESTDIR)/$(jardir)'
-	rm -rf jar-build && mkdir -p jar-build/lib/armeabi
+	rm -rf jar-build && mkdir -p jar-build/lib/x86_64
 	for eachlib in '$(DESTDIR)/$(libdir)'/libopenwebrtc{,_jni}.so; do \
-		cp -L $$eachlib jar-build/lib/armeabi; \
+		cp -L $$eachlib jar-build/lib/x86_64; \
 	done
 	$(JAR) cvf '$(DESTDIR)/$(jardir)/openwebrtc.jar' \
 		-C gen/owr com/ericsson/research/owr \
 		-C gen/owr com/ericsson/research \
-		-C jar-build lib/armeabi/libopenwebrtc.so \
-		-C jar-build lib/armeabi/libopenwebrtc_jni.so
+		-C jar-build lib/x86_64/libopenwebrtc.so \
+		-C jar-build lib/x86_64/libopenwebrtc_jni.so
 	$(JAR) cvf '$(DESTDIR)/$(jardir)/openwebrtc-sources.jar' \
 		-C owr com/ericsson/research/owr \
 		-C owr com/ericsson/research
@@ -99,12 +101,12 @@ install-data-local: install-exec
 		-C javadoc/ .
 if OWR_BRIDGE
 	for eachlib in '$(DESTDIR)/$(libdir)'/libopenwebrtc_bridge{,_jni}.so; do \
-		cp -L $$eachlib jar-build/lib/armeabi; \
+		cp -L $$eachlib jar-build/lib/x86_64; \
 	done
 	$(JAR) cvf '$(DESTDIR)/$(jardir)/openwebrtc_bridge.jar' \
 		-C gen/bridge com/ericsson/research/owr \
-		-C jar-build lib/armeabi/libopenwebrtc_bridge.so \
-		-C jar-build lib/armeabi/libopenwebrtc_bridge_jni.so
+		-C jar-build lib/x86_64/libopenwebrtc_bridge.so \
+		-C jar-build lib/x86_64/libopenwebrtc_bridge_jni.so
 	$(JAR) cvf '$(DESTDIR)/$(jardir)/openwebrtc_bridge-sources.jar' \
 		-C bridge com/ericsson/research/owr
 	$(JAR) cvf '$(DESTDIR)/$(jardir)/openwebrtc_bridge-javadoc.jar' \

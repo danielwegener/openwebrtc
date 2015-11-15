@@ -196,9 +196,6 @@ AC_HELP_STRING(
 esac],[enable_owr_java=no])
 AC_MSG_RESULT([$enable_owr_java])
 if test "x$enable_owr_java" = xyes; then
-  if test "x$is_android" != xyes; then
-    AC_MSG_ERROR([--enable-owr-java is only valid when building for Android])
-  fi
   if test "x$enable_shared" != xyes; then
     AC_MSG_ERROR([--enable-owr-java needs --enabled-shared])
   fi
@@ -242,7 +239,7 @@ AC_ARG_WITH(android-sdk,
             AS_HELP_STRING([--with-android-sdk],
                            [path to the Android SDK]),
             androidsdkdir=${withval}, androidsdkdir=)
-if test "x$enable_owr_java" = xyes; then
+if test "x$is_android" = xyes; then
   AC_MSG_CHECKING([for android.jar])
   if test "x$androidsdkdir" = x; then
     AC_MSG_ERROR([Need path to the Android SDK when building Android bindings])
